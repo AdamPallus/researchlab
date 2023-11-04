@@ -35,3 +35,28 @@ li {
 li:hover {
     background-color: #e0e0e0;
 }
+
+#grants-in-progress li {
+    position: relative;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+}
+
+.progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 5px;
+    background-color: #4caf50;
+}
+
+.grant-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.grant-failure {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}

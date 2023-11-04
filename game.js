@@ -36,4 +36,68 @@ document.addEventListener('DOMContentLoaded', () => {
         generateGrants();
         updateDisplay();
     }, 5000); // Check every 5 seconds
+
+    window.updateGrantsInProgressDisplay = function() {
+        const grantsInProgressElement = document.getElementById('grants-in-progress');
+    
+        state.grantsInProgress.forEach((grant,index) => {
+            let grantProgressElement = document.getElementById(`grant-progress-${grant.id}`);
+            if (grant.finalized) {
+                return;
+            }
+            if (!grantProgressElement) {
+                grantProgressElement = document.createElement('li');
+                grantProgressElement.className = 'grant-progress-item';
+                grantProgressElement.id = `grant-progress-${grant.id}`;
+                grantsInProgressElement.appendChild(grantProgressElement);
+            }
+    
+            const elapsedTime = Date.now() - grant.startTime;
+            const remainingTime = grant.decisionTimeline - elapsedTime;
+            const progressPercent = Math.max(0, 100 - (remainingTime / grant.decisionTimeline * 100));
+    
+            grantProgressElement.innerHTML = `
+            Grant ${index + 1}: $${grant.fundingAmount} - Decision in ${Math.ceil(remainingTime / 1000)}s
+            <div class="progress-bar" style="width: ${progressPercent}%"></div>
+            `;
+    
+            if (remainingTime <= 0 && !grant.finalized) {
+                finalizeGrantDecision(grant, grantProgressElement);
+            }
+        });
+    };
+    
+    function finalizeGrantDecision(grant, grantElement) {
+        if (grant.finalized) {
+            return;
+        }
+        grant.finalized = true;
+    
+        const success = isGrantSuccessful(grant.chance);
+        if (success) {
+            state.labFunding += grant.fundingAmount;
+            grantElement.classList.add('grant-success');
+            grantElement.textContent = `Grant: $${grant.fundingAmount} - Approved. Click to dismiss.`;
+        } else {
+            grantElement.classList.add('grant-failure');
+            grantElement.textContent = `Grant: $${grant.fundingAmount} - Denied. Click to dismiss.`;
+        }
+    
+        grantElement.addEventListener('click', function() {
+            const grantIndex = state.grantsInProgress.findIndex(g => g.id === grant.id);
+            if (grantIndex > -1) {
+                state.grantsInProgress.splice(grantIndex, 1);
+            }
+            grantElement.remove();
+            updateDisplay();
+        });
+    
+        clearInterval(grant.updateInterval);
+    }
+    
+    
+    
+
+    setInterval(updateGrantsInProgressDisplay, 1000);    
+    
 });

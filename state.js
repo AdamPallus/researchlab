@@ -5,6 +5,7 @@ let state = {
     lifetimePapers: 0,
     labFunding: 0,
     grantOpportunities: [],
+    grantsInProgress: [],
     grantBaseAmount: 1000, // Starting funding amount for grants
     grantPaperCost: 10, // Default cost in papers for a grant
     grantSuccessChance: 50, // Starting success chance for grants
@@ -25,16 +26,22 @@ function performResearch() {
  */
 function applyForGrant(grantIndex) {
     let grant = state.grantOpportunities[grantIndex];
+    
     if (state.availablePapers >= grant.cost) {
         state.availablePapers -= grant.cost;
         // Remove the grant from the opportunities list
         state.grantOpportunities.splice(grantIndex, 1);
+        grant.startTime = Date.now(); // Add this line after the grant object is defined
+        state.grantsInProgress.push(grant); // Add this line before the splice operation
+        updateGrantDisplay(); // Update the display to remove the grant from the list
+        updateGrantsInProgressDisplay();
         setTimeout(() => {
             if (isGrantSuccessful(grant.chance)) {
                 state.labFunding += grant.fundingAmount;
             }
             updateDisplay();
-            updateGrantDisplay();
+            // Potentially generate new grants after one has been processed
+            generateGrants();
         }, grant.decisionTimeline);
     } else {
         alert('Not enough research papers!');
@@ -47,6 +54,7 @@ function applyForGrant(grantIndex) {
  */
 function createGrantOpportunity() {
     const grant = {
+        id: Date.now(),
         fundingAmount: state.grantBaseAmount,
         cost: state.grantPaperCost,
         chance: state.grantSuccessChance,
@@ -90,4 +98,9 @@ function updateGrantDisplay() {
         grantElement.onclick = () => applyForGrant(index);
         grantsListElement.appendChild(grantElement);
     });
+}
+
+function updateGrantsInProgressDisplay() {
+    // This function will be implemented in the game.js file.
+    // It's declared here for consistency and will be called from applyForGrant.
 }
