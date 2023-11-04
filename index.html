@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Lab Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <section id="research-section">
+            <button id="research-button">Perform Research</button>
+            <p>Available Papers: <span id="available-papers">0</span></p>
+            <p>Lifetime Papers: <span id="lifetime-papers">0</span></p>
+            <p>Lab Funding: $<span id="lab-funding">0</span></p>
+        </section>
+        <section id="grants-section">
+            <h2>Research Grant Opportunities</h2>
+            <ul id="grants-list">
+                <!-- Grant opportunities will be listed here -->
+            </ul>
+        </section>
+    </div>
+    <script src="utils.js"></script>
+    <script src="state.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
