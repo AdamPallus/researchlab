@@ -25,17 +25,28 @@ document.addEventListener('DOMContentLoaded', () => {
         availablePapersElement.textContent = state.availablePapers;
         lifetimePapersElement.textContent = state.lifetimePapers;
         labFundingElement.textContent = state.labFunding.toFixed(2);
-    // Update the postdocs display
-    const postdocsElement = document.getElementById('postdocs');
-    postdocsElement.textContent = state.postdocs;
+        // Update the postdocs display
+        const postdocsElement = document.getElementById('postdocs');
+        postdocsElement.textContent = state.postdocs;
 
-    // Show or hide the "Hire Postdoc" button based on lab funding
-    const hirePostdocButton = document.getElementById('hire-postdoc-button');
-    if (state.labFunding > 0) {
-        hirePostdocButton.style.display = 'block';
-    } else {
-        hirePostdocButton.style.display = 'none';
-    }
+        //update students
+        const studentsElement = document.getElementById('students');
+        studentsElement.textContent = state.students
+
+        // Show or hide the "Hire Postdoc" button based on lab funding
+        const hirePostdocButton = document.getElementById('hire-postdoc-button');
+        if (state.labFunding > 0) {
+            hirePostdocButton.style.display = 'block';
+        } else {
+            hirePostdocButton.style.display = 'none';
+        }
+
+        const acceptStudentButton = document.getElementById('accept-student-button');
+        if (state.students < state.lifetimePapers/10.0) {
+            acceptStudentButton.style.display = 'block';
+        } else {
+            acceptStudentButton.style.display = 'none';
+        }
     
     };
 
@@ -54,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(() => {
         generateGrants();
         updateDisplay();
-    }, 5000); // Check every 5 seconds
+    }, 3000); 
 
     window.updateGrantsInProgressDisplay = function() {
         const grantsInProgressElement = document.getElementById('grants-in-progress');

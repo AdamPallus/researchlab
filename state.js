@@ -5,29 +5,31 @@ let state = {
     lifetimePapers: 0,
     labFunding: 0,
     postdocs: 0, // Number of postdocs hired
+    students: 0,
 
     grantOpportunities: [],
     grantsInProgress: [],
     grantBaseAmount: 1000, // Starting funding amount for grants
     grantPaperCost: 10, // Default cost in papers for a grant
     grantSuccessChance: 50, // Starting success chance for grants
-    grantDecisionTime: 10000 // Decision time in milliseconds for grants
+    grantDecisionTime: 10000, // Decision time in milliseconds for grants
+    newGrantChance: 0.5,
+    minChance: 20,
+    maxChance: 80,
+    minFunding: 500,
+    maxFunding: 10000,
+    minTime: 3000,
+    maxTime: 20000,
+    scalingFactor: 0.1,
+    maxGrants: 10
 };
 
-/**
- * Adds a paper to the available and lifetime totals
- */
 
-/**
- * Hires a postdoc if there is enough funding.
- */
-function hirePostdoc() {
-    if (state.labFunding > 0) {
-        state.postdocs += 1;
-        state.labFunding -= 100; // Cost to hire a postdoc
-        updateDisplay();
-    }
+function acceptStudent() {
+    state.students += 1;
+    updateDisplay();
 }
+
 
 function performResearch() {
     state.availablePapers += 1;
@@ -35,9 +37,7 @@ function performResearch() {
     updateDisplay();
 }
 
-/**
- * Attempts to apply for a grant
- */
+
 function applyForGrant(grantIndex) {
     let grant = state.grantOpportunities[grantIndex];
     
@@ -49,42 +49,44 @@ function applyForGrant(grantIndex) {
         state.grantsInProgress.push(grant); // Add this line before the splice operation
         updateGrantDisplay(); // Update the display to remove the grant from the list
         updateGrantsInProgressDisplay();
-        setTimeout(() => {
-            if (isGrantSuccessful(grant.chance)) {
-                state.labFunding += grant.fundingAmount;
-            }
-            updateDisplay();
-            // Potentially generate new grants after one has been processed
-            generateGrants();
-        }, grant.decisionTimeline);
+
     } else {
         alert('Not enough research papers!');
     }
     updateDisplay();
 }
 
-/**
- * Creates a new grant opportunity
- */
+
 function createGrantOpportunity() {
+    const fundingAmount = Math.floor(randomBetween(state.minFunding, state.maxFunding + 1));
     const grant = {
         id: Date.now(),
-        fundingAmount: state.grantBaseAmount,
-        cost: state.grantPaperCost,
-        chance: state.grantSuccessChance,
-        decisionTimeline: state.grantDecisionTime
+        fundingAmount: fundingAmount,
+        cost: Math.ceil(Math.sqrt(fundingAmount) * state.scalingFactor),
+        chance: Math.round(randomBetween(state.minChance, state.maxChance)),
+        decisionTimeline: Math.round(randomBetween(state.minTime, state.maxTime + 1))
     };
+
     state.grantOpportunities.push(grant);
+    if (state.grantOpportunities.length > state.maxGrants) {
+        // Remove the oldest (first) grant opportunity
+        state.grantOpportunities.shift();
+      }
     updateGrantDisplay();
 }
+
+
 
 /**
  * Generates grant opportunities if conditions are met
  */
 function generateGrants() {
-    if (state.availablePapers >= 10 && state.grantOpportunities.length < 5) {
+    if (Math.random() < state.newGrantChance) {
         createGrantOpportunity();
     }
+    // if (state.grantOpportunities.length < state.maxGrants) {
+    //     createGrantOpportunity();
+    // }
 }
 
 /**
@@ -128,6 +130,7 @@ function payAndGenerateResearch() {
         // Now we have enough funding to pay the postdocs
         state.labFunding -= 100 * state.postdocs;
         state.availablePapers += state.postdocs;
+        state.lifetimePapers += state.postdocs;
     }
 
     updateDisplay();
