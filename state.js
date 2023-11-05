@@ -30,6 +30,13 @@ function acceptStudent() {
     updateDisplay();
 }
 
+function hirePostdoc() {
+    if (state.labFunding > 0) {
+        state.postdocs += 1;
+        state.labFunding -= 100; // Cost to hire a postdoc
+        updateDisplay();
+    }
+}
 
 function performResearch() {
     state.availablePapers += 1;
