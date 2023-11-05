@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event listener for the "Perform Research" button
     researchButton.addEventListener('click', () => {
-        performResearch();
+        performResearch(1);
     });
 
 
@@ -14,6 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
     hirePostdocButton.addEventListener('click', () => {
         hirePostdoc();
     });
+
+    const acceptStudentButton = document.getElementById('accept-student-button');
+    acceptStudentButton.addEventListener('click',()=>{
+        acceptStudent()
+    })
     
 
     // Function to update the game display with the current state
@@ -29,6 +34,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const postdocsElement = document.getElementById('postdocs');
         postdocsElement.textContent = state.postdocs;
 
+<<<<<<< HEAD
+=======
+        //update students
+        const studentsElement = document.getElementById('students');
+        studentsElement.textContent = state.students
+        const maxStudentsElement = document.getElementById('maxstudents');
+        maxStudentsElement.textContent = state.maxStudents
+
+>>>>>>> adding-students
         // Show or hide the "Hire Postdoc" button based on lab funding
         const hirePostdocButton = document.getElementById('hire-postdoc-button');
         if (state.labFunding > 0) {
@@ -36,6 +50,16 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             hirePostdocButton.style.display = 'none';
         }
+<<<<<<< HEAD
+=======
+
+        const acceptStudentButton = document.getElementById('accept-student-button');
+        if (state.students < state.maxStudents) {
+            acceptStudentButton.style.display = 'block';
+        } else {
+            acceptStudentButton.style.display = 'none';
+        }
+>>>>>>> adding-students
     
     };
 

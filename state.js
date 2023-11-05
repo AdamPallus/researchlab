@@ -21,7 +21,11 @@ let state = {
     minTime: 3000,
     maxTime: 20000,
     scalingFactor: 0.1,
-    maxGrants: 10
+    maxGrants: 10,
+    studentResearchChance: 0.25,
+    studentGradChance: 0.25,
+    graduates: 0,
+    maxStudents: 1
 };
 
 function hirePostdoc() {
@@ -32,9 +36,24 @@ function hirePostdoc() {
     }
 }
 
+<<<<<<< HEAD
 function performResearch() {
     state.availablePapers += 1;
     state.lifetimePapers += 1;
+=======
+function hirePostdoc() {
+    if (state.labFunding > 0) {
+        state.postdocs += 1;
+        state.labFunding -= 100; // Cost to hire a postdoc
+        updateDisplay();
+    }
+}
+
+function performResearch(papers) {
+    state.availablePapers += papers;
+    state.lifetimePapers += papers;
+    state.maxStudents = Math.ceil(state.lifetimePapers/10.0)
+>>>>>>> adding-students
     updateDisplay();
 }
 
@@ -94,27 +113,27 @@ function generateGrants() {
  * Updates the game display with the current state
  */
 function updateDisplay() {
-    const availablePapersElement = document.getElementById('available-papers');
-    const lifetimePapersElement = document.getElementById('lifetime-papers');
-    const labFundingElement = document.getElementById('lab-funding');
+    // const availablePapersElement = document.getElementById('available-papers');
+    // const lifetimePapersElement = document.getElementById('lifetime-papers');
+    // const labFundingElement = document.getElementById('lab-funding');
 
-    availablePapersElement.textContent = state.availablePapers;
-    lifetimePapersElement.textContent = state.lifetimePapers;
-    labFundingElement.textContent = state.labFunding.toFixed(2);
+    // availablePapersElement.textContent = state.availablePapers;
+    // lifetimePapersElement.textContent = state.lifetimePapers;
+    // labFundingElement.textContent = state.labFunding.toFixed(2);
 }
 
 /**
  * Updates the grants display with the current state
  */
 function updateGrantDisplay() {
-    const grantsListElement = document.getElementById('grants-list');
-    grantsListElement.innerHTML = ''; // Clear the current list
-    state.grantOpportunities.forEach((grant, index) => {
-        const grantElement = document.createElement('li');
-        grantElement.textContent = `Grant ${index + 1}: $${grant.fundingAmount} (Cost: ${grant.cost} papers, Chance: ${grant.chance}%)`;
-        grantElement.onclick = () => applyForGrant(index);
-        grantsListElement.appendChild(grantElement);
-    });
+    // const grantsListElement = document.getElementById('grants-list');
+    // grantsListElement.innerHTML = ''; // Clear the current list
+    // state.grantOpportunities.forEach((grant, index) => {
+    //     const grantElement = document.createElement('li');
+    //     grantElement.textContent = `Grant ${index + 1}: $${grant.fundingAmount} (Cost: ${grant.cost} papers, Chance: ${grant.chance}%)`;
+    //     grantElement.onclick = () => applyForGrant(index);
+    //     grantsListElement.appendChild(grantElement);
+    // });
 }
 
 function updateGrantsInProgressDisplay() {
@@ -130,10 +149,26 @@ function payAndGenerateResearch() {
     if (state.postdocs > 0) {
         // Now we have enough funding to pay the postdocs
         state.labFunding -= 100 * state.postdocs;
-        state.availablePapers += state.postdocs;
-        state.lifetimePapers += state.postdocs;
+        performResearch(state.postdocs)
     }
 
+    checkStudentProgress()
+}
+
+function checkStudentProgress(){
+    let graduatedStudents = 0;
+
+    for (let i = 0; i < state.students; i++) {
+        if (Math.random() < state.studentResearchChance) {
+            performResearch(1);
+            if (Math.random() < state.studentGradChance) {
+                graduatedStudents++; // Increment the count of graduated students
+            }
+        }
+    }
+    // After checking each student, reduce the student count by the number of students who graduated
+    state.students -= graduatedStudents;
+    state.graduates += graduatedStudents;
     updateDisplay();
 }
 
