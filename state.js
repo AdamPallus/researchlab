@@ -4,6 +4,8 @@ let state = {
     availablePapers: 0,
     lifetimePapers: 0,
     labFunding: 0,
+    postdocs: 0, // Number of postdocs hired
+
     grantOpportunities: [],
     grantsInProgress: [],
     grantBaseAmount: 1000, // Starting funding amount for grants
@@ -15,6 +17,18 @@ let state = {
 /**
  * Adds a paper to the available and lifetime totals
  */
+
+/**
+ * Hires a postdoc if there is enough funding.
+ */
+function hirePostdoc() {
+    if (state.labFunding > 0) {
+        state.postdocs += 1;
+        state.labFunding -= 100; // Cost to hire a postdoc
+        updateDisplay();
+    }
+}
+
 function performResearch() {
     state.availablePapers += 1;
     state.lifetimePapers += 1;
@@ -104,3 +118,20 @@ function updateGrantsInProgressDisplay() {
     // This function will be implemented in the game.js file.
     // It's declared here for consistency and will be called from applyForGrant.
 }
+function payAndGenerateResearch() {
+    while (state.labFunding < 100 * state.postdocs && state.postdocs > 0) {
+        // Not enough funding, reduce the number of postdocs by one
+        state.postdocs -= 1;
+    }
+
+    if (state.postdocs > 0) {
+        // Now we have enough funding to pay the postdocs
+        state.labFunding -= 100 * state.postdocs;
+        state.availablePapers += state.postdocs;
+    }
+
+    updateDisplay();
+}
+
+// Set an interval to run the payAndGenerateResearch function every second
+setInterval(payAndGenerateResearch, 1000);

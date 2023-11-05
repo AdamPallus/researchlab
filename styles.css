@@ -1,7 +1,9 @@
 /* Basic styles for the game */
 
 body {
-    font-family: Arial, sans-serif;
+    background-color: #e6f7ff;
+    font-family: 'Courier New', Courier, monospace;
+    color: #333;
 }
 
 #game-container {
@@ -10,14 +12,32 @@ body {
     padding: 20px;
 }
 
-#research-section, #grants-section {
-    flex-basis: 50%;
+#research-section, #grants-section, #grants-in-progress-section {
+    flex-basis: 30%;
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    background-color: #ffffff;
+    margin: 20px;
 }
 
 button {
+    display: inline-flex;
+    align-items: center;
     padding: 10px 20px;
     margin: 10px 0;
     font-size: 16px;
+    border-radius: 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #45a047;
 }
 
 ul {
@@ -59,4 +79,16 @@ li:hover {
 .grant-failure {
     background-color: #f8d7da;
     border-color: #f5c6cb;
+}
+
+#microscope-icon {
+    width: 50px; /* You can adjust the size as needed */
+    height: auto;
+    margin-right: 10px;
+    vertical-align: middle; /* Aligns the icon with the text */
+}
+.material-icons {
+    vertical-align: middle;
+    margin-right: 5px;
+    font-size: 24px; /* Adjust the size as needed */
 }

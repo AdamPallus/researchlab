@@ -4,29 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Research Lab Game</title>
+    <!-- Include Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="game-container">
         <section id="research-section">
-            <button id="research-button">Perform Research</button>
+            <!-- Microscope icon next to the Perform Research button -->
+            <button id="research-button">
+                <span class="material-icons">biotech</span>
+                Perform Research
+            </button>
             <p>Available Papers: <span id="available-papers">0</span></p>
             <p>Lifetime Papers: <span id="lifetime-papers">0</span></p>
             <p>Lab Funding: $<span id="lab-funding">0</span></p>
-        </section>
+        <section id="postdoc-section">
+            <button id="hire-postdoc-button" style="display: none;">
+                <span class="material-icons">person_add</span>
+                Hire Postdoc
+            </button>
+            <p>Number of Postdocs: <span id="postdocs">0</span></p>
+        </section></section>
+        
+    </section>
         <section id="grants-section">
-            <h2>Research Grant Opportunities</h2>
+            <h2>
+                <span class="material-icons">monetization_on</span>
+                Research Grant Opportunities
+            </h2>
             <ul id="grants-list">
                 <!-- Grant opportunities will be listed here -->
             </ul>
         </section>
         <section id="grants-in-progress-section">
-            <h2>Grants in Progress</h2>
+            <h2>
+                <span class="material-icons">fact_check</span>
+                Grants in Progress
+            </h2>
             <ul id="grants-in-progress">
                 <!-- Grants in progress will be dynamically added here -->
             </ul>
         </section>
-        
     </div>
     <script src="utils.js"></script>
     <script src="state.js"></script>

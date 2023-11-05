@@ -9,6 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
         performResearch();
     });
 
+
+    const hirePostdocButton = document.getElementById('hire-postdoc-button');
+    hirePostdocButton.addEventListener('click', () => {
+        hirePostdoc();
+    });
+    
+
     // Function to update the game display with the current state
     window.updateDisplay = function() {
         const availablePapersElement = document.getElementById('available-papers');
@@ -18,6 +25,18 @@ document.addEventListener('DOMContentLoaded', () => {
         availablePapersElement.textContent = state.availablePapers;
         lifetimePapersElement.textContent = state.lifetimePapers;
         labFundingElement.textContent = state.labFunding.toFixed(2);
+    // Update the postdocs display
+    const postdocsElement = document.getElementById('postdocs');
+    postdocsElement.textContent = state.postdocs;
+
+    // Show or hide the "Hire Postdoc" button based on lab funding
+    const hirePostdocButton = document.getElementById('hire-postdoc-button');
+    if (state.labFunding > 0) {
+        hirePostdocButton.style.display = 'block';
+    } else {
+        hirePostdocButton.style.display = 'none';
+    }
+    
     };
 
     // Function to update the grants display
