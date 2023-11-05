@@ -44,11 +44,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const graduatesElement = document.getElementById('graduates');
         graduatesElement.textContent = state.graduates
 
+        document.getElementById('max-funding-upgrade').disabled = state.labFunding < state.upgradeCosts.maxFunding();
+        document.getElementById('increase-grant-rate').disabled = state.labFunding < state.upgradeCosts.increaseGrantRate();
+        document.getElementById('auto-accept-students-upgrade').disabled = state.labFunding < state.upgradeCosts.autoAcceptStudents();
+    
+
         // Show or hide the "Hire Postdoc" button based on lab funding
         const hirePostdocButton = document.getElementById('hire-postdoc-button');
         if (state.labFunding > 0) {
             hirePostdocButton.disabled = false;
             hirePostdocButton.classList.remove('button-disabled');
+
         } else {
             hirePostdocButton.disabled = true;
             hirePostdocButton.classList.add('button-disabled');
@@ -87,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(() => {
         generateGrants();
         updateDisplay();
-    }, 3000); 
+    }, 1000); 
 
     window.updateGrantsInProgressDisplay = function() {
         const grantsInProgressElement = document.getElementById('grants-in-progress');
@@ -180,8 +186,7 @@ function flashMessage(message) {
   
 
 function buyMaxFundingUpgrade() {
-    // Calculate the cost of the current level upgrade
-    var upgradeCost = state.grantBaseAmount * Math.pow(2, state.maxFundingLevel);
+    var upgradeCost = state.upgradeCosts.maxFunding();
 
     // Check if the player has enough money to buy the upgrade
     if (state.labFunding >= upgradeCost) {
@@ -207,7 +212,7 @@ function buyMaxFundingUpgrade() {
 
 
 function buyIncreaseGrantRate() {
-    var upgradeCost = 1000 * Math.pow(2, state.newGrantLevel);
+    var upgradeCost = state.upgradeCosts.increaseGrantRate();
     // Check if the player has enough money to buy the upgrade
     if (state.labFunding >= upgradeCost) {
         // Deduct the cost from the player's funds
@@ -235,8 +240,7 @@ function buyIncreaseGrantRate() {
 
 
 function buyAutoAcceptStudentsUpgrade() {
-    var upgradeCost = 20000 * Math.pow(2, state.autoAcceptRate); // Set the cost for the "auto accept students" upgrade
-
+    var upgradeCost = state.upgradeCosts.autoAcceptStudents();
     // Check if the player has enough money to buy the upgrade
     if (state.labFunding >= upgradeCost) {
         // Deduct the cost from the player's funds

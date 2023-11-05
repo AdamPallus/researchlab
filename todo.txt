@@ -1,1 +1,0 @@
-gray out upgrade buttons if not enough money

@@ -32,6 +32,20 @@ let state = {
     autoAcceptRate: 0
 };
 
+// Add upgrade cost definitions to the state
+state.upgradeCosts = {
+    maxFunding: function() {
+        return 10000 * Math.pow(2, state.maxFundingLevel);
+    },
+    increaseGrantRate: function() {
+        return 1000 * Math.pow(2, state.newGrantLevel);
+    },
+    autoAcceptStudents: function() {
+        return 20000 * Math.pow(2, state.autoAcceptRate);
+    }
+};
+
+
 function flashMessage(message) {
     const flashBox = document.createElement('div');
     flashBox.className = 'flash-message';
