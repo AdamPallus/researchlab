@@ -1,3 +1,8 @@
+
+    // If auto accept students upgrade has been purchased, 50% chance to accept a student
+    if (state.autoAcceptStudents && Math.random() < 0.5) {
+        acceptStudent();
+    }
 // Main game logic and event bindings
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -166,3 +171,57 @@ function buyMaxFundingUpgrade() {
         alert('Not enough funds to purchase this upgrade.');
     }
 }
+
+
+function buyIncreaseGrantRate() {
+    var upgradeCost = 1000 * Math.pow(2, state.newGrantLevel);
+    // Check if the player has enough money to buy the upgrade
+    if (state.labFunding >= upgradeCost) {
+        // Deduct the cost from the player's funds
+        state.labFunding -= upgradeCost;
+
+        // Increase the maxFundingLevel
+        state.newGrantLevel += 1;
+
+        // increase funding chance by 10%
+        state.newGrantChance = state.newGrantChance*1.1;
+
+        // Update the cost on the "Max Funding" button for the next upgrade
+        document.getElementById('increase-grant-rate').textContent = 'Upgrade New Grant Rate - $' + (1000 * Math.pow(2, state.newGrantLevel)).toLocaleString();
+
+        // Update the paragraph
+        document.getElementById('new-grant-rate').textContent = 'Current chance: ' + (state.newGrantChance).toLocaleString();
+
+        // Update other parts of the UI if necessary
+        // For example: update displayed lab funding
+        // document.getElementById('lab-funding').textContent = '$' + state.labFunding.toLocaleString();
+    } else {
+        alert('Not enough funds to purchase this upgrade.');
+    }
+}
+
+
+function buyAutoAcceptStudentsUpgrade() {
+    var upgradeCost = 20000; // Set the cost for the "auto accept students" upgrade
+
+    // Check if the player has enough money to buy the upgrade
+    if (state.labFunding >= upgradeCost) {
+        // Deduct the cost from the player's funds
+        state.labFunding -= upgradeCost;
+
+        // Set the autoAcceptStudents property to true
+        state.autoAcceptStudents = true;
+
+        // Update the button to reflect that the upgrade has been purchased
+        var upgradeButton = document.getElementById('auto-accept-students-upgrade');
+        upgradeButton.textContent = 'Auto Accept Students (Purchased)';
+        upgradeButton.disabled = true;
+
+        // Update other parts of the UI if necessary
+        // For example: update displayed lab funding
+        // document.getElementById('lab-funding').textContent = '$' + state.labFunding.toLocaleString();
+    } else {
+        alert('Not enough funds to purchase this upgrade.');
+    }
+}
+

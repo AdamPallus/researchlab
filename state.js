@@ -14,6 +14,7 @@ let state = {
     grantSuccessChance: 50, // Starting success chance for grants
     grantDecisionTime: 10000, // Decision time in milliseconds for grants
     newGrantChance: 0.5,
+    newGrantLevel: 0,
     minChance: 20,
     maxChance: 80,
     minFunding: 500,
@@ -21,12 +22,14 @@ let state = {
     maxFunding: 10000,
     minTime: 3000,
     maxTime: 20000,
-    scalingFactor: 0.1,
+    scalingFactor: 0.2,
     maxGrants: 10,
     studentResearchChance: 0.25,
     studentGradChance: 0.25,
     graduates: 0,
-    maxStudents: 1
+    maxStudents: 1,
+    autoAcceptStudents: false, // Tracks if the 'auto accept students' upgrade has been purchased
+    autoAcceptRate: 1
 };
 
 function acceptStudent() {
@@ -163,7 +166,15 @@ function checkStudentProgress(){
     // After checking each student, reduce the student count by the number of students who graduated
     state.students -= graduatedStudents;
     state.graduates += graduatedStudents;
+
+    //accept new students
+    if (state.autoAcceptStudents){
+        if (Math.random() < state.autoAcceptRate){
+            acceptStudent()
+        }
+    }
     updateDisplay();
+    
 }
 
 // Set an interval to run the payAndGenerateResearch function every second
