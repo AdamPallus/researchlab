@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         availablePapersElement.textContent = state.availablePapers;
         lifetimePapersElement.textContent = state.lifetimePapers;
-        labFundingElement.textContent = state.labFunding.toFixed(2);
+        labFundingElement.textContent = state.labFunding.toLocaleString(2);
         // Update the postdocs display
         const postdocsElement = document.getElementById('postdocs');
         postdocsElement.textContent = state.postdocs;
@@ -130,6 +130,16 @@ document.addEventListener('DOMContentLoaded', () => {
             grantElement.textContent = `Grant: $${grant.fundingAmount} - Denied. Click to dismiss.`;
         }
     
+        let autoDismissTimeout = setTimeout(() => {
+            // This code will run after 5 seconds unless the timer is cleared
+            const grantIndex = state.grantsInProgress.findIndex(g => g.id === grant.id);
+            if (grantIndex > -1) {
+                state.grantsInProgress.splice(grantIndex, 1);
+            }
+            grantElement.remove();
+            updateDisplay();
+        }, 5000); // 5 seconds
+    
         grantElement.addEventListener('click', function() {
             const grantIndex = state.grantsInProgress.findIndex(g => g.id === grant.id);
             if (grantIndex > -1) {
@@ -137,10 +147,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             grantElement.remove();
             updateDisplay();
+            // Clear the auto-dismiss timer when the user clicks the grant
+            clearTimeout(autoDismissTimeout);
         });
     
         clearInterval(grant.updateInterval);
     }
+    
     
     setInterval(updateGrantsInProgressDisplay, 1000);    
     
