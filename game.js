@@ -71,10 +71,17 @@ document.addEventListener('DOMContentLoaded', () => {
         state.grantOpportunities.forEach((grant, index) => {
             const grantElement = document.createElement('li');
             grantElement.textContent = `Grant ${index + 1}: $${grant.fundingAmount} (Cost: ${grant.cost} papers, Chance: ${grant.chance}%)`;
+            
+            // Check if enough papers are available for the grant
+            if (state.availablePapers >= grant.cost) {
+                grantElement.classList.add('affordable'); // Add the 'affordable' class if the condition is met
+            }
+            
             grantElement.onclick = () => applyForGrant(index);
             grantsListElement.appendChild(grantElement);
         });
     };
+    
 
     // Periodically check for new grant opportunities
     setInterval(() => {

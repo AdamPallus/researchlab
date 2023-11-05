@@ -1,3 +1,1 @@
-make the completed grants disappear after a few seconds
-replace all pop-up alerts with flashed messages
 gray out upgrade buttons if not enough money

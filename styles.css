@@ -117,4 +117,10 @@ li:hover {
     80% { opacity: 1; }
     100% { opacity: 0; display: none; }
   }
+
+  .affordable {
+    background-color: #d4edda; /* A light green background */
+    color: #155724; /* A dark green text color for better contrast */
+}
+
   
