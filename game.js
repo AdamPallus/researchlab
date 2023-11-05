@@ -1,8 +1,4 @@
 
-    // If auto accept students upgrade has been purchased, 50% chance to accept a student
-    if (state.autoAcceptStudents && Math.random() < 0.5) {
-        acceptStudent();
-    }
 // Main game logic and event bindings
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -22,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const acceptStudentButton = document.getElementById('accept-student-button');
     acceptStudentButton.addEventListener('click',()=>{
-        acceptStudent()
+        acceptStudent(1)
     })
     
 
@@ -40,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         postdocsElement.textContent = state.postdocs;
 
         //update students
+        
         const studentsElement = document.getElementById('students');
         studentsElement.textContent = state.students
         const maxStudentsElement = document.getElementById('maxstudents');
@@ -202,7 +199,7 @@ function buyIncreaseGrantRate() {
 
 
 function buyAutoAcceptStudentsUpgrade() {
-    var upgradeCost = 20000; // Set the cost for the "auto accept students" upgrade
+    var upgradeCost = 20000 * Math.pow(2, state.autoAcceptRate); // Set the cost for the "auto accept students" upgrade
 
     // Check if the player has enough money to buy the upgrade
     if (state.labFunding >= upgradeCost) {
@@ -211,12 +208,14 @@ function buyAutoAcceptStudentsUpgrade() {
 
         // Set the autoAcceptStudents property to true
         state.autoAcceptStudents = true;
+        state.autoAcceptRate += 1;
 
         // Update the button to reflect that the upgrade has been purchased
         var upgradeButton = document.getElementById('auto-accept-students-upgrade');
-        upgradeButton.textContent = 'Auto Accept Students (Purchased)';
-        upgradeButton.disabled = true;
+        upgradeButton.textContent = 'Accept More Students - $'+(20000 * Math.pow(2, state.autoAcceptRate)).toLocaleString();
 
+        var autoAcceptText = document.getElementById('auto-accept-text');
+        autoAcceptText.textContent = 'Current rate: '+(state.autoAcceptRate).toLocaleString() + ' Students/second'
         // Update other parts of the UI if necessary
         // For example: update displayed lab funding
         // document.getElementById('lab-funding').textContent = '$' + state.labFunding.toLocaleString();

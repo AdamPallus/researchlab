@@ -3,7 +3,7 @@
 let state = {
     availablePapers: 0,
     lifetimePapers: 0,
-    labFunding: 0,
+    labFunding: 100000,
     postdocs: 0, // Number of postdocs hired
     students: 0,
 
@@ -29,12 +29,12 @@ let state = {
     graduates: 0,
     maxStudents: 1,
     autoAcceptStudents: false, // Tracks if the 'auto accept students' upgrade has been purchased
-    autoAcceptRate: 1
+    autoAcceptRate: 0
 };
 
-function acceptStudent() {
+function acceptStudent(n) {
     if (state.students < state.maxStudents) {
-        state.students += 1;
+        state.students = Math.min(state.students+n, state.maxStudents)
         updateDisplay();
     }
 }
@@ -170,7 +170,7 @@ function checkStudentProgress(){
     //accept new students
     if (state.autoAcceptStudents){
         if (Math.random() < state.autoAcceptRate){
-            acceptStudent()
+            acceptStudent(state.autoAcceptRate)
         }
     }
     updateDisplay();
