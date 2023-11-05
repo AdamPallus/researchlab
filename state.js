@@ -87,9 +87,12 @@ function performResearch(papers) {
 
 function makeAdminsAvailable(){
     var openSlots = state.grantAdmins-state.availableAdmins;
-    state.availableAdmins = Math.min(state.availableAdmins += Math.floor(randomBetween(1,openSlots)), state.grantAdmins);
-    document.getElementById('grant-admin-text').textContent = 'Available Admins: ' +state.availableAdmins + "/" + state.grantAdmins;
-    updateDisplay();
+    if (openSlots>0){
+        console.log("Admin available")
+        state.availableAdmins = Math.min(state.availableAdmins += Math.floor(randomBetween(1,openSlots)), state.grantAdmins);
+        document.getElementById('grant-admin-text').textContent = 'Available Admins: ' +state.availableAdmins + "/" + state.grantAdmins;
+        updateDisplay();
+    }
 }
 
 function applyForGrant(grantIndex) {
@@ -136,7 +139,6 @@ function generateGrants() {
             createGrantOpportunity();
         }
         newGrantChance -= 1;
-        console.log(newGrantChance)
     }
 }
 

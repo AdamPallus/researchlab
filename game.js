@@ -82,7 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Check if enough papers are available for the grant
             if (state.availablePapers >= grant.cost) {
                 // If an admin is available, apply for the grant automatically
-                if (state.availableAdmins > 0) {
+                // only do it 1/10 of the time though
+                if (Math.random() < 0.1 && state.availableAdmins > 0) {
+                    console.log("Triggering admin applies: "+ state.availableAdmins)
                     state.availableAdmins--;
                     applyForGrant(index);
                     flashMessage('Grand Admin applied for grant!');
