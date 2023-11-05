@@ -40,6 +40,11 @@ button:hover {
     background-color: #45a047;
 }
 
+button:disabled {
+    opacity: 0.5; 
+    cursor: not-allowed;
+}
+
 ul {
     list-style: none;
     padding: 0;
