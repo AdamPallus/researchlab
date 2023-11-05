@@ -141,3 +141,28 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateGrantsInProgressDisplay, 1000);    
     
 });
+function buyMaxFundingUpgrade() {
+    // Calculate the cost of the current level upgrade
+    var upgradeCost = state.grantBaseAmount * Math.pow(2, state.maxFundingLevel);
+
+    // Check if the player has enough money to buy the upgrade
+    if (state.labFunding >= upgradeCost) {
+        // Deduct the cost from the player's funds
+        state.labFunding -= upgradeCost;
+
+        // Increase the maxFundingLevel
+        state.maxFundingLevel += 1;
+
+        // Calculate the new maxFunding amount
+        state.maxFunding = Math.pow(2, state.maxFundingLevel) * state.grantBaseAmount;
+
+        // Update the cost on the "Max Funding" button for the next upgrade
+        document.getElementById('max-funding-upgrade').textContent = 'Max Funding - $' + (10000 * Math.pow(2, state.maxFundingLevel)).toLocaleString();
+
+        // Update other parts of the UI if necessary
+        // For example: update displayed lab funding
+        // document.getElementById('lab-funding').textContent = '$' + state.labFunding.toLocaleString();
+    } else {
+        alert('Not enough funds to purchase this upgrade.');
+    }
+}

@@ -9,7 +9,7 @@ let state = {
 
     grantOpportunities: [],
     grantsInProgress: [],
-    grantBaseAmount: 1000, // Starting funding amount for grants
+    grantBaseAmount: 10000, // Starting funding amount for grants
     grantPaperCost: 10, // Default cost in papers for a grant
     grantSuccessChance: 50, // Starting success chance for grants
     grantDecisionTime: 10000, // Decision time in milliseconds for grants
@@ -17,6 +17,7 @@ let state = {
     minChance: 20,
     maxChance: 80,
     minFunding: 500,
+    maxFundingLevel: 0,
     maxFunding: 10000,
     minTime: 3000,
     maxTime: 20000,
