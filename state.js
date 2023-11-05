@@ -25,12 +25,6 @@ let state = {
 };
 
 
-function acceptStudent() {
-    state.students += 1;
-    updateDisplay();
-}
-
-
 function performResearch() {
     state.availablePapers += 1;
     state.lifetimePapers += 1;

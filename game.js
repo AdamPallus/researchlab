@@ -29,23 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const postdocsElement = document.getElementById('postdocs');
         postdocsElement.textContent = state.postdocs;
 
-        //update students
-        const studentsElement = document.getElementById('students');
-        studentsElement.textContent = state.students
-
         // Show or hide the "Hire Postdoc" button based on lab funding
         const hirePostdocButton = document.getElementById('hire-postdoc-button');
         if (state.labFunding > 0) {
             hirePostdocButton.style.display = 'block';
         } else {
             hirePostdocButton.style.display = 'none';
-        }
-
-        const acceptStudentButton = document.getElementById('accept-student-button');
-        if (state.students < state.lifetimePapers/10.0) {
-            acceptStudentButton.style.display = 'block';
-        } else {
-            acceptStudentButton.style.display = 'none';
         }
     
     };
@@ -125,9 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(grant.updateInterval);
     }
     
-    
-    
-
     setInterval(updateGrantsInProgressDisplay, 1000);    
     
 });
