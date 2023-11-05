@@ -34,15 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const postdocsElement = document.getElementById('postdocs');
         postdocsElement.textContent = state.postdocs;
 
-<<<<<<< HEAD
-=======
         //update students
         const studentsElement = document.getElementById('students');
         studentsElement.textContent = state.students
         const maxStudentsElement = document.getElementById('maxstudents');
         maxStudentsElement.textContent = state.maxStudents
 
->>>>>>> adding-students
         // Show or hide the "Hire Postdoc" button based on lab funding
         const hirePostdocButton = document.getElementById('hire-postdoc-button');
         if (state.labFunding > 0) {
@@ -50,8 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             hirePostdocButton.style.display = 'none';
         }
-<<<<<<< HEAD
-=======
 
         const acceptStudentButton = document.getElementById('accept-student-button');
         if (state.students < state.maxStudents) {
@@ -59,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             acceptStudentButton.style.display = 'none';
         }
->>>>>>> adding-students
     
     };
 

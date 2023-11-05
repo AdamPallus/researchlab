@@ -36,11 +36,6 @@ function hirePostdoc() {
     }
 }
 
-<<<<<<< HEAD
-function performResearch() {
-    state.availablePapers += 1;
-    state.lifetimePapers += 1;
-=======
 function hirePostdoc() {
     if (state.labFunding > 0) {
         state.postdocs += 1;
@@ -53,7 +48,6 @@ function performResearch(papers) {
     state.availablePapers += papers;
     state.lifetimePapers += papers;
     state.maxStudents = Math.ceil(state.lifetimePapers/10.0)
->>>>>>> adding-students
     updateDisplay();
 }
 
