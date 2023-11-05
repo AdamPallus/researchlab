@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('max-funding-upgrade').disabled = state.labFunding < state.upgradeCosts.maxFunding();
         document.getElementById('increase-grant-rate').disabled = state.labFunding < state.upgradeCosts.increaseGrantRate();
         document.getElementById('auto-accept-students-upgrade').disabled = state.labFunding < state.upgradeCosts.autoAcceptStudents();
-    
+        document.getElementById('hire-grant-admin').disabled = state.labFunding < state.upgradeCosts.grantAdmin();
 
         // Show or hide the "Hire Postdoc" button based on lab funding
         const hirePostdocButton = document.getElementById('hire-postdoc-button');
@@ -125,8 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
- 
-
     function finalizeGrantDecision(grant, grantElement) {
         if (grant.finalized) {
             return;
@@ -167,7 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(grant.updateInterval);
     }
     
-    
     setInterval(updateGrantsInProgressDisplay, 1000);    
     
 });
@@ -184,83 +181,56 @@ function flashMessage(message) {
     }, 3000); // Remove the flash message after 3 seconds
   }
   
-
-function buyMaxFundingUpgrade() {
+  function buyMaxFundingUpgrade() {
     var upgradeCost = state.upgradeCosts.maxFunding();
 
-    // Check if the player has enough money to buy the upgrade
     if (state.labFunding >= upgradeCost) {
-        // Deduct the cost from the player's funds
         state.labFunding -= upgradeCost;
-
-        // Increase the maxFundingLevel
         state.maxFundingLevel += 1;
-
-        // Calculate the new maxFunding amount
         state.maxFunding = Math.pow(2, state.maxFundingLevel) * state.grantBaseAmount;
-
-        // Update the cost on the "Max Funding" button for the next upgrade
-        document.getElementById('max-funding-upgrade').textContent = 'Max Funding - $' + (10000 * Math.pow(2, state.maxFundingLevel)).toLocaleString();
-
-        // Update other parts of the UI if necessary
-        // For example: update displayed lab funding
-        // document.getElementById('lab-funding').textContent = '$' + state.labFunding.toLocaleString();
+        document.getElementById('max-funding-text').textContent = 'Increase Max Funding - $' + state.upgradeCosts.maxFunding().toLocaleString();
     } else {
         flashMessage('Not enough funds to purchase this upgrade.');
     }
 }
-
 
 function buyIncreaseGrantRate() {
     var upgradeCost = state.upgradeCosts.increaseGrantRate();
-    // Check if the player has enough money to buy the upgrade
+
     if (state.labFunding >= upgradeCost) {
-        // Deduct the cost from the player's funds
         state.labFunding -= upgradeCost;
-
-        // Increase the maxFundingLevel
         state.newGrantLevel += 1;
-
-        // increase funding chance by 10%
-        state.newGrantChance = state.newGrantChance*1.1;
-
-        // Update the cost on the "Max Funding" button for the next upgrade
-        document.getElementById('increase-grant-rate').textContent = 'Upgrade New Grant Rate - $' + (1000 * Math.pow(2, state.newGrantLevel)).toLocaleString();
-
-        // Update the paragraph
-        document.getElementById('new-grant-rate').textContent = 'Current chance: ' + (state.newGrantChance).toLocaleString();
-
-        // Update other parts of the UI if necessary
-        // For example: update displayed lab funding
-        // document.getElementById('lab-funding').textContent = '$' + state.labFunding.toLocaleString();
+        state.newGrantChance *= 1.1;
+        document.getElementById('increase-grant-rate-text').textContent = 'Upgrade New Grant Rate - $' + state.upgradeCosts.increaseGrantRate().toLocaleString();
+        document.getElementById('new-grant-rate').textContent = 'Current chance: ' + state.newGrantChance.toFixed(2)*100 + '%';
     } else {
         flashMessage('Not enough funds to purchase this upgrade.');
     }
 }
-
 
 function buyAutoAcceptStudentsUpgrade() {
     var upgradeCost = state.upgradeCosts.autoAcceptStudents();
-    // Check if the player has enough money to buy the upgrade
-    if (state.labFunding >= upgradeCost) {
-        // Deduct the cost from the player's funds
-        state.labFunding -= upgradeCost;
 
-        // Set the autoAcceptStudents property to true
+    if (state.labFunding >= upgradeCost) {
+        state.labFunding -= upgradeCost;
         state.autoAcceptStudents = true;
         state.autoAcceptRate += 1;
-
-        // Update the button to reflect that the upgrade has been purchased
-        var upgradeButton = document.getElementById('auto-accept-students-upgrade');
-        upgradeButton.textContent = 'Accept More Students - $'+(20000 * Math.pow(2, state.autoAcceptRate)).toLocaleString();
-
-        var autoAcceptText = document.getElementById('auto-accept-text');
-        autoAcceptText.textContent = 'Current rate: '+(state.autoAcceptRate).toLocaleString() + ' Students/second'
-        // Update other parts of the UI if necessary
-        // For example: update displayed lab funding
-        // document.getElementById('lab-funding').textContent = '$' + state.labFunding.toLocaleString();
+        document.getElementById('auto-accept-button-text').textContent = 'Auto Accept Students - $' + state.upgradeCosts.autoAcceptStudents().toLocaleString();
+        document.getElementById('auto-accept-text').textContent = 'Current rate: ' + state.autoAcceptRate + ' Students/second';
     } else {
         flashMessage('Not enough funds to purchase this upgrade.');
     }
 }
 
+function hireGrantAdmin() {
+    var upgradeCost = state.upgradeCosts.grantAdmin();
+
+    if (state.labFunding >= upgradeCost) {
+        state.labFunding -= upgradeCost;
+        state.grantAdmins = (state.grantAdmins || 0) + 1;
+        document.getElementById('hire-grant-admin-text').textContent = 'Hire Grant Admin - $' + state.upgradeCosts.grantAdmin().toLocaleString();
+        document.getElementById('grant-admin-text').textContent = 'Current Admins: ' + state.grantAdmins;
+    } else {
+        flashMessage('Not enough funds to hire more admins right now.');
+    }
+}

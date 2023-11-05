@@ -65,25 +65,34 @@
     <div class="upgrade">
         <button id="max-funding-upgrade" onclick="buyMaxFundingUpgrade()">
             <span class="material-icons">attach_money</span>
-            Increase Max Funding - $10,000
+            <span id="max-funding-text">Increase Max Funding - $10,000</span>
         </button>
         <p>Upgrade your lab's facilities to increase the maximum amount of grant funding you can receive.</p>
     </div>
     <div class="upgrade">
         <button id="auto-accept-students-upgrade" onclick="buyAutoAcceptStudentsUpgrade()">
             <span class="material-icons">school</span>
-            Auto Accept Students - $20,000
+            <span id="auto-accept-button-text">Auto Accept Students - $20,000</span>
         </button>
-        <p id = auto-accept-text>Automatically accept new students.</p>
+        <p id="auto-accept-text">Automatically accept new students.</p>
     </div>
-
+    
     <div class="upgrade">
         <button id="increase-grant-rate" onclick="buyIncreaseGrantRate()">
-            <span class="material-icons">school</span>
-            'Upgrade New Grant Rate - $1000
+            <span class="material-icons">trending_up</span>
+            <span id="increase-grant-rate-text">Upgrade New Grant Rate - $1,000</span>
         </button>
         <p id="new-grant-rate">Increases the rate at which new grants are available</p>
     </div>
+    <div class="upgrade">
+        <button id="hire-grant-admin" onclick="hireGrantAdmin()">
+            <span class="material-icons">person_add</span>
+            <span id="hire-grant-admin-text">Hire Grant Administrator - $50,000</span>
+        </button>
+        <p id="grant-admin-text">Hire a grant administrator to apply for grants automatically.</p>
+    </div>
+    
+    
 
 </section>
 

@@ -29,7 +29,8 @@ let state = {
     graduates: 0,
     maxStudents: 1,
     autoAcceptStudents: false, // Tracks if the 'auto accept students' upgrade has been purchased
-    autoAcceptRate: 0
+    autoAcceptRate: 0,
+    grantAdmins: 0
 };
 
 // Add upgrade cost definitions to the state
@@ -42,6 +43,9 @@ state.upgradeCosts = {
     },
     autoAcceptStudents: function() {
         return 20000 * Math.pow(2, state.autoAcceptRate);
+    },
+    grantAdmin: function(){
+        return 50000 * Math.pow(2, state.grantAdmins);
     }
 };
 
