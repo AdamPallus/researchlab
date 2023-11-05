@@ -74,20 +74,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to update the grants display
     window.updateGrantDisplay = function() {
         grantsListElement.innerHTML = ''; // Clear the current list
+    
         state.grantOpportunities.forEach((grant, index) => {
             const grantElement = document.createElement('li');
             grantElement.textContent = `Grant ${index + 1}: $${grant.fundingAmount} (Cost: ${grant.cost} papers, Chance: ${grant.chance}%)`;
             
             // Check if enough papers are available for the grant
             if (state.availablePapers >= grant.cost) {
-                grantElement.classList.add('affordable'); // Add the 'affordable' class if the condition is met
+                // If an admin is available, apply for the grant automatically
+                if (state.availableAdmins > 0) {
+                    state.availableAdmins--;
+                    applyForGrant(index);
+                    flashMessage('Grand Admin applied for grant!');
+                } else {
+                    // Otherwise, highlight the grant as affordable and set up a click event to apply
+                    grantElement.classList.add('affordable'); // Add the 'affordable' class if the condition is met
+                    grantElement.onclick = () => applyForGrant(index);
+                }
+            } else {
+                // If not enough papers, still set up a click event to apply, which might involve user buying papers or similar
+                grantElement.onclick = () => applyForGrant(index);
             }
-            
-            grantElement.onclick = () => applyForGrant(index);
+    
             grantsListElement.appendChild(grantElement);
         });
+        document.getElementById('grant-admin-text').textContent = 'Available Admins: ' +state.availableAdmins+"/"+state.grantAdmins;
     };
     
+
 
     // Periodically check for new grant opportunities
     setInterval(() => {
@@ -228,9 +242,12 @@ function hireGrantAdmin() {
     if (state.labFunding >= upgradeCost) {
         state.labFunding -= upgradeCost;
         state.grantAdmins = (state.grantAdmins || 0) + 1;
+        makeAdminsAvailable()
         document.getElementById('hire-grant-admin-text').textContent = 'Hire Grant Admin - $' + state.upgradeCosts.grantAdmin().toLocaleString();
-        document.getElementById('grant-admin-text').textContent = 'Current Admins: ' + state.grantAdmins;
+        document.getElementById('grant-admin-text').textContent = 'Available Admins: ' +state.availableAdmins+"/"+state.grantAdmins;
     } else {
         flashMessage('Not enough funds to hire more admins right now.');
     }
 }
+
+

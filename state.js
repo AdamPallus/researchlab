@@ -3,7 +3,7 @@
 let state = {
     availablePapers: 0,
     lifetimePapers: 0,
-    labFunding: 100000,
+    labFunding: 1000000,
     postdocs: 0, // Number of postdocs hired
     students: 0,
 
@@ -30,7 +30,8 @@ let state = {
     maxStudents: 1,
     autoAcceptStudents: false, // Tracks if the 'auto accept students' upgrade has been purchased
     autoAcceptRate: 0,
-    grantAdmins: 0
+    grantAdmins: 0,
+    availableAdmins: 0
 };
 
 // Add upgrade cost definitions to the state
@@ -84,6 +85,12 @@ function performResearch(papers) {
     updateDisplay();
 }
 
+function makeAdminsAvailable(){
+    var openSlots = state.grantAdmins-state.availableAdmins;
+    state.availableAdmins = Math.min(state.availableAdmins += Math.floor(randomBetween(1,openSlots)), state.grantAdmins);
+    document.getElementById('grant-admin-text').textContent = 'Available Admins: ' +state.availableAdmins + "/" + state.grantAdmins;
+    updateDisplay();
+}
 
 function applyForGrant(grantIndex) {
     let grant = state.grantOpportunities[grantIndex];
@@ -102,7 +109,6 @@ function applyForGrant(grantIndex) {
     }
     updateDisplay();
 }
-
 
 function createGrantOpportunity() {
     const fundingAmount = Math.floor(randomBetween(state.minFunding, state.maxFunding + 1));
@@ -123,10 +129,6 @@ function createGrantOpportunity() {
 }
 
 
-
-/**
- * Generates grant opportunities if conditions are met
- */
 function generateGrants() {
     var newGrantChance = state.newGrantChance;
     while (newGrantChance>0){
@@ -136,42 +138,12 @@ function generateGrants() {
         newGrantChance -= 1;
         console.log(newGrantChance)
     }
-    // if (state.grantOpportunities.length < state.maxGrants) {
-    //     createGrantOpportunity();
-    // }
 }
 
-/**
- * Updates the game display with the current state
- */
-function updateDisplay() {
-    // const availablePapersElement = document.getElementById('available-papers');
-    // const lifetimePapersElement = document.getElementById('lifetime-papers');
-    // const labFundingElement = document.getElementById('lab-funding');
+function updateDisplay() {}
+function updateGrantDisplay() {}
+function updateGrantsInProgressDisplay() {}
 
-    // availablePapersElement.textContent = state.availablePapers;
-    // lifetimePapersElement.textContent = state.lifetimePapers;
-    // labFundingElement.textContent = state.labFunding.toFixed(2);
-}
-
-/**
- * Updates the grants display with the current state
- */
-function updateGrantDisplay() {
-    // const grantsListElement = document.getElementById('grants-list');
-    // grantsListElement.innerHTML = ''; // Clear the current list
-    // state.grantOpportunities.forEach((grant, index) => {
-    //     const grantElement = document.createElement('li');
-    //     grantElement.textContent = `Grant ${index + 1}: $${grant.fundingAmount} (Cost: ${grant.cost} papers, Chance: ${grant.chance}%)`;
-    //     grantElement.onclick = () => applyForGrant(index);
-    //     grantsListElement.appendChild(grantElement);
-    // });
-}
-
-function updateGrantsInProgressDisplay() {
-    // This function will be implemented in the game.js file.
-    // It's declared here for consistency and will be called from applyForGrant.
-}
 function payAndGenerateResearch() {
     while (state.labFunding < 100 * state.postdocs && state.postdocs > 0) {
         // Not enough funding, reduce the number of postdocs by one
@@ -215,3 +187,4 @@ function checkStudentProgress(){
 
 // Set an interval to run the payAndGenerateResearch function every second
 setInterval(payAndGenerateResearch, 1000);
+var adminIntervalID = setInterval(makeAdminsAvailable, 10000);
