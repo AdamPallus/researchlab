@@ -28,10 +28,9 @@ let state = {
     maxStudents: 1
 };
 
-function hirePostdoc() {
-    if (state.labFunding > 0) {
-        state.postdocs += 1;
-        state.labFunding -= 100; // Cost to hire a postdoc
+function acceptStudent() {
+    if (state.students < state.maxStudents) {
+        state.students += 1;
         updateDisplay();
     }
 }
