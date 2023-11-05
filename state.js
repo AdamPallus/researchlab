@@ -32,6 +32,18 @@ let state = {
     autoAcceptRate: 0
 };
 
+function flashMessage(message) {
+    const flashBox = document.createElement('div');
+    flashBox.className = 'flash-message';
+    flashBox.textContent = message;
+    document.body.appendChild(flashBox);
+    flashBox.style.display = 'block';
+  
+    setTimeout(() => {
+      document.body.removeChild(flashBox);
+    }, 3000); // Remove the flash message after 3 seconds
+  }
+
 function acceptStudent(n) {
     if (state.students < state.maxStudents) {
         state.students = Math.min(state.students+n, state.maxStudents)
@@ -68,7 +80,7 @@ function applyForGrant(grantIndex) {
         updateGrantsInProgressDisplay();
 
     } else {
-        alert('Not enough research papers!');
+        flashMessage('Not enough research papers!');
     }
     updateDisplay();
 }
@@ -98,8 +110,13 @@ function createGrantOpportunity() {
  * Generates grant opportunities if conditions are met
  */
 function generateGrants() {
-    if (Math.random() < state.newGrantChance) {
-        createGrantOpportunity();
+    var newGrantChance = state.newGrantChance;
+    while (newGrantChance>0){
+        if (Math.random() < newGrantChance) {
+            createGrantOpportunity();
+        }
+        newGrantChance -= 1;
+        console.log(newGrantChance)
     }
     // if (state.grantOpportunities.length < state.maxGrants) {
     //     createGrantOpportunity();
@@ -169,6 +186,7 @@ function checkStudentProgress(){
 
     //accept new students
     if (state.autoAcceptStudents){
+
         if (Math.random() < state.autoAcceptRate){
             acceptStudent(state.autoAcceptRate)
         }

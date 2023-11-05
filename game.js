@@ -111,7 +111,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     };
-    
+
+ 
+
     function finalizeGrantDecision(grant, grantElement) {
         if (grant.finalized) {
             return;
@@ -143,6 +145,20 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateGrantsInProgressDisplay, 1000);    
     
 });
+
+function flashMessage(message) {
+    const flashBox = document.createElement('div');
+    flashBox.className = 'flash-message';
+    flashBox.textContent = message;
+    document.body.appendChild(flashBox);
+    flashBox.style.display = 'block';
+  
+    setTimeout(() => {
+      document.body.removeChild(flashBox);
+    }, 3000); // Remove the flash message after 3 seconds
+  }
+  
+
 function buyMaxFundingUpgrade() {
     // Calculate the cost of the current level upgrade
     var upgradeCost = state.grantBaseAmount * Math.pow(2, state.maxFundingLevel);
@@ -165,7 +181,7 @@ function buyMaxFundingUpgrade() {
         // For example: update displayed lab funding
         // document.getElementById('lab-funding').textContent = '$' + state.labFunding.toLocaleString();
     } else {
-        alert('Not enough funds to purchase this upgrade.');
+        flashMessage('Not enough funds to purchase this upgrade.');
     }
 }
 
@@ -193,7 +209,7 @@ function buyIncreaseGrantRate() {
         // For example: update displayed lab funding
         // document.getElementById('lab-funding').textContent = '$' + state.labFunding.toLocaleString();
     } else {
-        alert('Not enough funds to purchase this upgrade.');
+        flashMessage('Not enough funds to purchase this upgrade.');
     }
 }
 
@@ -220,7 +236,7 @@ function buyAutoAcceptStudentsUpgrade() {
         // For example: update displayed lab funding
         // document.getElementById('lab-funding').textContent = '$' + state.labFunding.toLocaleString();
     } else {
-        alert('Not enough funds to purchase this upgrade.');
+        flashMessage('Not enough funds to purchase this upgrade.');
     }
 }
 
